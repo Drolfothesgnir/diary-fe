@@ -57,6 +57,8 @@
     display: flex;
     justify-content: center;
     padding-bottom: 1rem;
+    padding-top: 1rem;
+    border-top: 3px solid #b0c4de;
     background-color: #fafafa;
 
     .inputBlock {

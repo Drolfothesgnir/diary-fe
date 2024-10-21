@@ -12,6 +12,7 @@
     display: flex;
     justify-content: center;
     padding: 1rem;
+    border-top: 3px solid #b0c4de;
 
     /* Стиль кнопки "Новая запись" */
     button {

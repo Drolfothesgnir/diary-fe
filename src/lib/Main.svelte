@@ -16,5 +16,6 @@
     display: flex;
     justify-content: center;
     overflow: auto;
+    flex-wrap: wrap;
   }
 </style>

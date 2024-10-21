@@ -23,11 +23,20 @@
   let editorState: EditorState = EditorState.CLOSED;
   let editId: number | null = null;
   let editorContent = "";
+  let page = 1;
+  let perPage = 10;
+  let hasNext = true;
 
-  const refresh = () =>
-    getEntries().then(({ items }) => {
-      entries = items;
-    });
+  const loadEntries = async () => {
+    const { items, has_next } = await getEntries(page, perPage);
+    entries = entries.concat(items);
+    hasNext = has_next;
+  };
+
+  const loadMore = async () => {
+    await loadEntries();
+    page += 1;
+  };
 
   const createEntry = () => (editorState = EditorState.NEW);
 
@@ -38,7 +47,9 @@
   };
 
   const removeEntry = (id: number) => {
-    deleteEntry(id).then(refresh);
+    deleteEntry(id).then(() => {
+      entries = entries.filter((entry) => entry.id !== id);
+    });
   };
 
   const closeEditor = () => {
@@ -60,14 +71,47 @@
     closeEditor();
   }
 
+  const handleKeyDown = (e: KeyboardEvent) => {
+    switch (e.key.toLowerCase()) {
+      case "т":
+      case "n": {
+        if (editorState === EditorState.CLOSED) {
+          e.preventDefault();
+          createEntry();
+        }
+        break;
+      }
+
+      case "escape": {
+        if (editorState > EditorState.CLOSED) {
+          closeEditor();
+        }
+        break;
+      }
+
+      default:
+        break;
+    }
+  };
+
   onMount(() => {
-    refresh();
+    loadEntries();
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
   });
 </script>
 
 <Header />
 <Main>
   <EntryList {entries} onRemoveClick={removeEntry} onEditClick={editEntry} />
+  {#if hasNext}
+    <div class="loadMore">
+      <button on:click={loadMore}>Load more</button>
+    </div>
+  {/if}
 </Main>
 {#if editorState > 0}
   <Editor
@@ -80,4 +124,27 @@
 {/if}
 
 <style lang="scss">
+  .loadMore {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+
+    /* Стиль кнопки "Новая запись" */
+    button {
+      background-color: #b3d4fc; /* Светло-зелёный фон */
+      color: #4f4f4f; /* Тёмно-серый текст */
+      border: none; /* Без границы */
+      padding: 10px 20px; /* Внутренние отступы для удобного размера кнопки */
+      border-radius: 10px; /* Округлённые углы */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Лёгкая тень */
+      font-size: 16px; /* Размер текста */
+      transition: background-color 0.3s ease; /* Плавный переход фона при наведении */
+
+      &:hover {
+        background-color: #90ee90; /* Более тёмный оттенок зелёного */
+        cursor: pointer; /* Изменение курсора на указатель */
+      }
+    }
+  }
 </style>
