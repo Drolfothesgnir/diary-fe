@@ -26,6 +26,6 @@ export async function postEntry(content: string) {
   return await http.post("/record", { content });
 }
 
-export async function putEntry(id: number, content: string) {
-  return await http.put(`/record/${id}`, { content });
+export async function putEntry(id: number, content?: string, pinned?: boolean) {
+  return await http.put(`/record/${id}`, { content, pinned });
 }

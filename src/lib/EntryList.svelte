@@ -5,6 +5,7 @@
   export let entries: EntrySchema[];
   export let onRemoveClick: (id: number) => void;
   export let onEditClick: (entry: EntrySchema) => void;
+  export let onPinClick: (entry: EntrySchema) => void;
 </script>
 
 <ul class="entryList">
@@ -13,6 +14,7 @@
       {entry}
       onRemoveClick={() => onRemoveClick(entry.id)}
       onEditClick={() => onEditClick(entry)}
+      onPinClick={() => onPinClick(entry)}
     />
   {/each}
 </ul>

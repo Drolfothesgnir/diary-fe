@@ -71,6 +71,14 @@
     closeEditor();
   }
 
+  async function alterEntryPinnedField(entry: EntrySchema) {
+    const response = await putEntry(entry.id, undefined, !entry.pinned);
+    const entriesCopy = entries.slice();
+    const oldEntryIndex = entries.findIndex(({ id }) => id === entry.id);
+    entriesCopy[oldEntryIndex] = response.data;
+    entries = entriesCopy;
+  }
+
   const handleKeyDown = (e: KeyboardEvent) => {
     switch (e.key.toLowerCase()) {
       case "т":
@@ -106,7 +114,12 @@
 
 <Header />
 <Main>
-  <EntryList {entries} onRemoveClick={removeEntry} onEditClick={editEntry} />
+  <EntryList
+    {entries}
+    onRemoveClick={removeEntry}
+    onEditClick={editEntry}
+    onPinClick={alterEntryPinnedField}
+  />
   {#if hasNext}
     <div class="loadMore">
       <button on:click={loadMore}>Load more</button>

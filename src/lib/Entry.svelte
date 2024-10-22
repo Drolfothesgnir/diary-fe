@@ -1,15 +1,14 @@
-<script>
+<script lang="ts">
   import moment from "moment";
+  import type { EntrySchema } from "../types";
 
-  export let entry;
-  export let onRemoveClick;
-  export let onEditClick;
+  export let entry: EntrySchema;
+  export let onRemoveClick: () => void;
+  export let onEditClick: () => void;
+  export let onPinClick: () => void;
 
   let copied = false;
-  /**
-   * @type {HTMLPreElement}
-   */
-  let contentRef;
+  let contentRef: HTMLPreElement;
 
   // Function to copy content
   const copyEntryContent = () => {
@@ -50,6 +49,12 @@
       <button class="editButton" on:click={onEditClick}> Edit entry </button>
       <button on:click={copyEntryContent} class="copy {copied ? 'copied' : ''}">
         {copied ? "Copied!" : "Copy"}
+      </button>
+      <button
+        on:click={onPinClick}
+        class="pinButton {entry.pinned ? 'pinned' : ''}"
+      >
+        {entry.pinned ? "Unpin" : "Pin"}
       </button>
     </div>
   </footer>
@@ -120,6 +125,25 @@
             &:hover {
               background-color: #add8e6; /* Светло-голубой при наведении */
               cursor: pointer;
+            }
+          }
+
+          &.pinButton {
+            background-color: #ffcc80;
+            border: 1px solid #ffb74d;
+
+            &:hover {
+              background-color: #ffa726;
+              color: #fff;
+            }
+
+            &.pinned {
+              background-color: #81c784; /* Светло-зелёный для прикреплённых записей */
+              border: 1px solid #66bb6a;
+
+              &:hover {
+                background-color: #4caf50;
+              }
             }
           }
         }
