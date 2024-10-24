@@ -16,23 +16,23 @@ export const perPage = writable<number>(10);
 export const hasNext = writable<boolean>(true);
 
 // Function to load entries (and update the store)
-export async function loadEntries(onlyPinned = false) {
+export async function loadEntries(pinned?: boolean) {
   const currentPage = get(page);
   const currentPerPage = get(perPage);
 
   const { items, has_next } = await getEntries(
     currentPage,
     currentPerPage,
-    onlyPinned
+    pinned
   );
   entries.update((currentEntries) => currentEntries.concat(items));
   hasNext.set(has_next);
   page.update((n) => n + 1); // Increment page number after loading
 }
 
-export async function initialFetch(onlyPinned = false) {
+export async function initialFetch(pinned?: boolean) {
   const currentPerPage = get(perPage);
-  const { items, has_next } = await getEntries(1, currentPerPage, onlyPinned);
+  const { items, has_next } = await getEntries(1, currentPerPage, pinned);
   entries.update(() => items);
   hasNext.set(has_next);
   page.update(() => 2);

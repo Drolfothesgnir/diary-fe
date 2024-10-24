@@ -5,16 +5,19 @@ import http from "./http";
 export async function getEntries(
   page: number = 1,
   per_page: number = 10,
-  pinnedOnly = false
+  pinned?: boolean,
+  s?: string
 ) {
   const response: AxiosResponse<{
     items: EntrySchema[];
     total: number;
     has_next: boolean;
-  }> = await http.get(pinnedOnly ? "/record/pinned" : "/record", {
+  }> = await http.get("/record", {
     params: {
       page,
       per_page,
+      pinned,
+      s,
     },
   });
 
