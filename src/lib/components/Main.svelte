@@ -7,7 +7,7 @@
 </main>
 
 <style lang="scss">
-  @use "./scss/colors.scss" as colors;
+  @use "../scss/colors.scss" as colors;
 
   .main {
     padding: 1rem;

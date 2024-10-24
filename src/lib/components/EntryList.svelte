@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { EntrySchema } from "../types";
+  import type { EntrySchema } from "../../types";
   import Entry from "./Entry.svelte";
 
   export let entries: EntrySchema[];

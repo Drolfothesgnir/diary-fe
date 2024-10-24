@@ -1,6 +1,6 @@
 <script lang="ts">
   import moment from "moment";
-  import type { EntrySchema } from "../types";
+  import type { EntrySchema } from "../../types";
 
   export let entry: EntrySchema;
   export let onRemoveClick: () => void;
@@ -61,8 +61,6 @@
 </li>
 
 <style lang="scss">
-  @use "./scss/colors.scss" as colors;
-
   .entry {
     border: 5px solid #c4e7d4;
     border-radius: 10px;
@@ -72,7 +70,7 @@
     margin-bottom: 10px;
 
     .divider {
-      background-color: colors.$main;
+      background-color: #e6e6fa;
       width: 100%;
       display: block;
       height: 1px;
