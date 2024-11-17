@@ -8,6 +8,7 @@
   export let onPinClick: () => void;
 
   let copied = false;
+  let copiedFull = false;
   let contentRef: HTMLPreElement;
 
   // Function to copy content
@@ -17,6 +18,26 @@
       copied = true;
       setTimeout(() => {
         copied = false;
+      }, 2000); // Reset the copied state after 2 seconds
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // Function to copy content along with created_at and updated_at
+  const copyFullEntryInfo = () => {
+    const createdAt = moment.utc(entry.created_at).local().format("LLLL");
+    const updatedAt = entry.updated_at
+      ? moment.utc(entry.updated_at).local().format("LLLL")
+      : null;
+
+    const str = `${createdAt}\n${"-".repeat(createdAt.length)}\n${contentRef.innerHTML}\n${"-".repeat(createdAt.length)}${updatedAt ? "\nUpdated at: " + updatedAt : ""}`;
+
+    try {
+      navigator.clipboard.writeText(str);
+      copiedFull = true;
+      setTimeout(() => {
+        copiedFull = false;
       }, 2000); // Reset the copied state after 2 seconds
     } catch (e) {
       console.log(e);
@@ -48,7 +69,13 @@
       </button>
       <button class="editButton" on:click={onEditClick}> Edit entry </button>
       <button on:click={copyEntryContent} class="copy {copied ? 'copied' : ''}">
-        {copied ? "Copied!" : "Copy"}
+        {copied ? "Content copied!" : "Copy content"}
+      </button>
+      <button
+        on:click={copyFullEntryInfo}
+        class="copy {copiedFull ? 'copied' : ''}"
+      >
+        {copiedFull ? "Content copied!" : "Copy full entry"}
       </button>
       <button
         on:click={onPinClick}
