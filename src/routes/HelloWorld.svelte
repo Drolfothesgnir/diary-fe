@@ -22,19 +22,32 @@
   };
 
   function transform_Levy(V: Vector[], theta?: number): Vector[] {
-    const result: Vector[] = [];
-    V.forEach((v) => {
+    const result: Vector[] = new Array(V.length * 2);
+    let idx = 0;
+
+    for (let i = 0; i < V.length; i++) {
+      const v = V[i];
       const v1 = v.rotate_Levy(theta);
       const v2 = new Vector(v1.x2, v1.y2, v.x2, v.y2);
-      result.push(v1, v2);
-    });
+      result[idx++] = v1;
+      result[idx++] = v2;
+    }
     return result;
   }
 
-  function get_points(V: Vector[]): [number, number][] {
-    const result: [number, number][] = [[V[0].x1, V[0].y1]];
+  function get_points(V: Vector[]) {
+    const points = new Float64Array(V.length * 2 + 2);
+    points[0] = V[0].x1;
+    points[1] = V[0].y1;
 
-    return result.concat(V.map((v) => [v.x2, v.y2]));
+    let idx = 2;
+
+    for (let i = 0; i < V.length; i++) {
+      const v = V[i];
+      points[idx++] = v.x2;
+      points[idx++] = v.y2;
+    }
+    return points;
   }
 
   const draw = (ctx: CanvasRenderingContext2D) => {
@@ -44,16 +57,15 @@
     for (let i = 0; i < n; i++) {
       V = transform_Levy(V);
     }
-    console.log(V.length);
 
     const points = get_points(V);
 
-    ctx.beginPath();
-    ctx.moveTo(points[0][0], points[0][1]);
-    points.forEach((p) => ctx.lineTo(p[0], p[1]));
-    ctx.stroke();
-
-    ctx.closePath();
+    const path = new Path2D();
+    path.moveTo(points[0], points[1]);
+    for (let i = 2; i < points.length; i += 2) {
+      path.lineTo(points[i], points[i + 1]);
+    }
+    ctx.stroke(path);
   };
 
   onMount(() => {
@@ -78,6 +90,9 @@
   <button disabled={n == 0} on:click={decrease_i}>
     Remove transformation
   </button>
+  <span>
+    Number of iterations: {n}
+  </span>
 </div>
 
 <style lang="scss">
