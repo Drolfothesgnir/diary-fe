@@ -6,6 +6,7 @@
   import Editor from "./lib/components/Editor.svelte";
   import Home from "./routes/Home.svelte";
   import Pinned from "./routes/Pinned.svelte";
+  import HelloWorld from "./routes/HelloWorld.svelte";
   import Header from "./lib/components/Header.svelte";
   import Main from "./lib/components/Main.svelte";
   import NewEntry from "./lib/components/NewEntry.svelte";
@@ -62,6 +63,7 @@
   const routes = {
     "/": Home,
     "/pinned": Pinned,
+    "/hello_world": HelloWorld,
   };
 </script>
 

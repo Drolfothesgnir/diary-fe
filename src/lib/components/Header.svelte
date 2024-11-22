@@ -3,19 +3,37 @@
 
   // Svelte's reactive store subscription shorthand ($) for reactive variables
   $: currentPath = $location;
+
+  const navLinks = [
+    {
+      path: "/",
+      title: "All entries",
+    },
+    {
+      path: "/pinned",
+      title: "Pinned entries",
+    },
+    {
+      path: "/hello_world",
+      title: "Hello World!!",
+    },
+  ];
 </script>
 
 <header class="header">
   <nav>
     <ul>
-      <li>
-        <a href="/" class:current={currentPath === "/"} use:link>All entries</a>
-      </li>
-      <li>
-        <a href="/pinned" class:current={currentPath === "/pinned"} use:link
-          >Pinned entries</a
-        >
-      </li>
+      {#each navLinks as navLink}
+        <li>
+          <a
+            href={navLink.path}
+            class:current={currentPath === navLink.path}
+            use:link
+          >
+            {navLink.title}
+          </a>
+        </li>
+      {/each}
     </ul>
   </nav>
 </header>
