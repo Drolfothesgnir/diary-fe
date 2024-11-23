@@ -15,8 +15,12 @@ export class Vector {
     return Math.sqrt((this.x1 - this.x2) ** 2 + (this.y1 - this.y2) ** 2);
   }
 
-  translate(x: number, y: number) {
+  shiftBy(x: number, y: number) {
     return new Vector(this.x1 + x, this.y1 + y, this.x2 + x, this.y2 + y);
+  }
+
+  translate(x: number, y: number) {
+    return new Vector(x, y, this.x2 - this.x1 + x, this.y2 - this.y1 + y);
   }
 
   rotate(theta: number) {
@@ -30,7 +34,9 @@ export class Vector {
   }
 
   scale(c: number) {
-    return new Vector(this.x1, this.y1, c * this.x2, c * this.y2);
+    const v1 = (this.x2 - this.x1) * c;
+    const v2 = (this.y2 - this.y1) * c;
+    return new Vector(this.x1, this.y1, this.x1 + v1, this.y1 + v2);
   }
 
   rotate_Levy(theta: number = -Math.PI / 4) {
