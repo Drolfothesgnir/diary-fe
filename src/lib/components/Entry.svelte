@@ -9,12 +9,11 @@
 
   let copied = false;
   let copiedFull = false;
-  let contentRef: HTMLPreElement;
 
   // Function to copy content
   const copyEntryContent = () => {
     try {
-      navigator.clipboard.writeText(contentRef.innerHTML);
+      navigator.clipboard.writeText(entry.content);
       copied = true;
       setTimeout(() => {
         copied = false;
@@ -31,7 +30,7 @@
       ? moment.utc(entry.updated_at).local().format("LLLL")
       : null;
 
-    const str = `${createdAt}\n${"-".repeat(createdAt.length)}\n${contentRef.innerHTML}\n${"-".repeat(createdAt.length)}${updatedAt ? "\nUpdated at: " + updatedAt : ""}`;
+    const str = `${createdAt}\n${"-".repeat(createdAt.length)}\n${entry.content}\n${"-".repeat(createdAt.length)}${updatedAt ? "\nUpdated at: " + updatedAt : ""}`;
 
     try {
       navigator.clipboard.writeText(str);
@@ -52,7 +51,7 @@
 
   <span class="divider"></span>
 
-  <pre bind:this={contentRef}>{entry.content}</pre>
+  <pre>{entry.content}</pre>
 
   <span class="divider"></span>
 
