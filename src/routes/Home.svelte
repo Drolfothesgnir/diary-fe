@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import queryString from "query-string";
   import EntryList from "../lib/components/EntryList.svelte";
   import LoadMore from "../lib/components/LoadMore.svelte";
   import {
@@ -17,8 +18,20 @@
     await togglePinEntry(entry.id, !entry.pinned);
   }
 
+  type QueryParams = {
+    page?: number;
+    per_page?: number;
+    pinned?: boolean;
+    s?: string;
+    sort?: string;
+  };
+
   onMount(() => {
-    initialFetch();
+    const { page, per_page, pinned, s, sort } = queryString.parse(
+      location.search
+    ) as QueryParams;
+
+    initialFetch(page, per_page, pinned, s, sort);
   });
 </script>
 

@@ -6,7 +6,8 @@ export async function getEntries(
   page: number = 1,
   per_page: number = 10,
   pinned?: boolean,
-  s?: string
+  s?: string,
+  sort = "last"
 ) {
   const response: AxiosResponse<{
     items: EntrySchema[];
@@ -18,6 +19,7 @@ export async function getEntries(
       per_page,
       pinned,
       s,
+      sort,
     },
   });
 

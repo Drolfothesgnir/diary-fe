@@ -30,9 +30,21 @@ export async function loadEntries(pinned?: boolean) {
   page.update((n) => n + 1); // Increment page number after loading
 }
 
-export async function initialFetch(pinned?: boolean) {
-  const currentPerPage = get(perPage);
-  const { items, has_next } = await getEntries(1, currentPerPage, pinned);
+export async function initialFetch(
+  page_i = 1,
+  per_page?: number,
+  pinned?: boolean,
+  s?: string,
+  sort = "last"
+) {
+  const currentPerPage = per_page || get(perPage);
+  const { items, has_next } = await getEntries(
+    page_i,
+    currentPerPage,
+    pinned,
+    s,
+    sort
+  );
   entries.update(() => items);
   hasNext.set(has_next);
   page.update(() => 2);
